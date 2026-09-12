@@ -907,6 +907,31 @@
     }
 
     .browser-address span { flex: 0 0 auto; color: var(--accent); }
+    .browser-menu {
+      position: absolute;
+      top: 6.8rem;
+      right: 0.75rem;
+      z-index: 20;
+      display: grid;
+      min-width: 190px;
+      padding: 0.35rem;
+      border: 1px solid #414141;
+      border-radius: 8px;
+      background: #202020;
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
+    }
+    .browser-menu[hidden] { display: none; }
+    .browser-menu button {
+      padding: 0.65rem 0.75rem;
+      border: 0;
+      border-radius: 5px;
+      text-align: left;
+      color: #ddd;
+      background: transparent;
+      cursor: pointer;
+    }
+    .browser-menu button:hover { background: #343434; color: #fff; }
+
     .browser-address input {
       width: 100%;
       min-width: 0;
@@ -1490,9 +1515,9 @@
       </div>
     </div>
   <div class="scramjet-panel">
-  <div class="browser-tabs" aria-label="Browser tabs">
-    <div class="browser-tab" aria-current="page"><strong>UV</strong><span>New Tab</span><span aria-hidden="true">×</span></div>
-    <button class="browser-action" type="button" aria-label="New tab">+</button>
+  <div class="browser-tabs" aria-label="Browser tabs" id="browser-tabs">
+    <button class="browser-tab active" type="button" data-tab-id="tab-1"><strong>UV</strong><span class="tab-label">New Tab</span><span class="tab-close" aria-label="Close tab">×</span></button>
+    <button class="browser-action" type="button" aria-label="New tab" data-new-tab>+</button>
   </div>
   <form class="browser-toolbar" id="scramjet-form" aria-label="Browser navigation">
   <button class="browser-nav" type="button" aria-label="Back" data-browser-back>‹</button>
@@ -1503,7 +1528,13 @@
     <input type="text" id="scramjet-address" placeholder="Enter a URL" autocomplete="url" required>
   </label>
   <button class="browser-action" type="submit" id="scramjet-go" aria-label="Go">↵</button>
-  <button class="browser-action" type="button" aria-label="More options">⋯</button>
+  <button class="browser-action" type="button" aria-label="More options" data-menu-toggle>⋯</button>
+  <div class="browser-menu" data-browser-menu hidden>
+    <button type="button" data-menu-action="clear">Clear all tabs</button>
+    <button type="button" data-menu-action="fullscreen">Fullscreen</button>
+    <button type="button" data-menu-action="new-window">Open in new tab</button>
+    <button type="button" data-menu-action="desktop">Save to desktop</button>
+  </div>
   </form>
       <p id="scramjet-status" role="status">Ready — enter a URL to browse</p>
       <div id="scramjet-frame-host" aria-label="Ultraviolet browsing view"></div>
