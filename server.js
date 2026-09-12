@@ -10,11 +10,6 @@ const port = Number(process.env.PORT || 3000);
 
 const bare = createBareServer("/search/service/", { logErrors: true });
 
-app.use((req, res, next) => {
-  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-  next();
-});
 app.use("/search/uv/sw.js", (_req, res, next) => {
   res.setHeader("Service-Worker-Allowed", "/search/");
   next();
