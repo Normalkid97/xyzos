@@ -14,13 +14,37 @@ function normalizeUrl(value) {
 
 let transport;
 
+function withTimeout(promise, message, ms = 8000) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => window.setTimeout(() => reject(new Error(message)), ms)),
+  ]);
+}
+
 async function registerUltraviolet() {
   if (!navigator.serviceWorker) throw new Error("Service workers are not supported.");
-  const registration = await navigator.serviceWorker.register("/search/sw.js", { scope: "/search/" });
-  await registration.update();
+  status.textContent = "Registering Ultraviolet service worker…";
+  const registration = await withTimeout(
+    navigator.serviceWorker.register("/search/sw.js", { scope: "/search/" }),
+    "Ultraviolet service worker registration timed out.",
+  );
+  await withTimeout(registration.update(), "Ultraviolet service worker update timed out.");
+  if (!navigator.serviceWorker.controller) {
+    await Promise.race([
+      new Promise((resolve) => navigator.serviceWorker.addEventListener("controllerchange", resolve, { once: true })),
+      new Promise((resolve) => window.setTimeout(resolve, 5000)),
+    ]);
+  }
+  if (!navigator.serviceWorker.controller) {
+    throw new Error("Ultraviolet service worker did not activate. Reload the page and try again.");
+  }
+  status.textContent = "Connecting Ultraviolet transport…";
   if (!transport) transport = new BareMuxConnection("/search/baremux/worker.js");
   const bareUrl = `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/search/service/`;
-  await transport.setTransport("/search/libcurl/index.mjs", [{ websocket: bareUrl }]);
+  await withTimeout(
+    transport.setTransport("/search/libcurl/index.mjs", [{ websocket: bareUrl }]),
+    "Ultraviolet transport connection timed out.",
+  );
   self.__uv$config = {
     prefix: "/search/service/",
     encodeUrl: Ultraviolet.codec.xor.encode,
