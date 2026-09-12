@@ -1650,7 +1650,26 @@
       }
     }
 
-    // --- 5. PANIC BUTTON SYSTEM ---
+    // --- 5. ABOUT:BLANK CLOAK ---
+    let aboutBlankOpened = false;
+
+    function openInAboutBlank() {
+      if (aboutBlankOpened || window.self !== window.top) return;
+
+      const cloak = cloakPresets[userSettings.cloak] || cloakPresets.default;
+      const popup = window.open('about:blank', '_blank');
+      if (!popup) return;
+
+      aboutBlankOpened = true;
+      popup.document.write(`<!doctype html><html><head><title>${cloak.title}</title><link rel="icon" href="${cloak.icon}"><style>html,body,iframe{width:100%;height:100%;margin:0;border:0;overflow:hidden;background:#0a0705}iframe{display:block}</style></head><body><iframe src="${location.href}" title="XYZ-YA! OS"></iframe></body></html>`);
+      popup.document.close();
+      window.location.replace(userSettings.panicUrl || 'https://www.google.com/');
+    }
+
+    // Restore the legacy behavior without triggering recursively inside the iframe.
+    document.addEventListener('click', openInAboutBlank, { once: true });
+
+    // --- 6. PANIC BUTTON SYSTEM ---
     let isCapturingPanicKey = false;
 
     function startPanicKeyCapture() {
