@@ -1834,7 +1834,7 @@
     });
 
     // --- ASSIGNMENT / QUIZ GAME LAUNCHER ---
-    // Every launchable tile opens /assignments/<game>/index.html
+    // Each launchable tile opens its own /assignments/<game>/index.html
     // inside its own XYZ-YA! OS window. Multiple games can stay open at once.
     function gameFolderFromCard(card) {
       const explicitGame = card.getAttribute('data-game');
@@ -1859,7 +1859,7 @@
 
       const titleEl = card.querySelector('.item-card-title');
       const title = titleEl ? titleEl.textContent.trim() : game;
-      const src = `/assignments/1/index.html`;
+      const src = `/assignments/${encodeURIComponent(game)}/index.html`;
 
       // Create a brand-new OS window every time, so multiple games/apps
       // can be open simultaneously.
