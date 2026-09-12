@@ -12,11 +12,8 @@ function normalizeUrl(value) {
 
 async function registerUltraviolet() {
   if (!navigator.serviceWorker) throw new Error("Service workers are not supported.");
-  await navigator.serviceWorker.register("/search/sw.js", { scope: "/search/" });
-  await navigator.serviceWorker.ready;
-  if (!navigator.serviceWorker.controller) {
-    await new Promise((resolve) => navigator.serviceWorker.addEventListener("controllerchange", resolve, { once: true }));
-  }
+  const registration = await navigator.serviceWorker.register("/search/sw.js", { scope: "/search/" });
+  await registration.update();
   self.__uv$config = {
     prefix: "/search/service/",
     encodeUrl: Ultraviolet.codec.xor.encode,
@@ -38,11 +35,23 @@ async function browse(event) {
     const frame = document.createElement("iframe");
     frame.className = "scramjet-frame";
     frame.title = "Ultraviolet proxy view";
+    let settled = false;
+    const timeout = window.setTimeout(() => {
+      if (!settled) {
+        status.textContent = "Ultraviolet timed out loading this address. Try another URL.";
+        goButton.disabled = false;
+      }
+    }, 10000);
     frame.addEventListener("load", () => {
+      settled = true;
+      window.clearTimeout(timeout);
       status.textContent = "Connected through Ultraviolet";
     }, { once: true });
     frame.addEventListener("error", () => {
+      settled = true;
+      window.clearTimeout(timeout);
       status.textContent = "Ultraviolet could not load this address.";
+      goButton.disabled = false;
     }, { once: true });
     frame.src = `${self.__uv$config.prefix}${self.__uv$config.encodeUrl(target)}`;
     frameHost.replaceChildren(frame);
