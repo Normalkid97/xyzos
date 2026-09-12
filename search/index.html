@@ -2153,6 +2153,16 @@
       }[ch]));
     }
 
+    function openRequestedHostedGame() {
+      const requestedUrl = new URLSearchParams(window.location.search).get('game');
+      if (!requestedUrl || window.location.hash !== '#proxy') return;
+      const card = document.querySelector('#assignmentsGrid .item-card-tile');
+      if (!card) return;
+      card.setAttribute('data-url', requestedUrl);
+      card.querySelector('.item-card-title').textContent = 'Hosted game';
+      launchCatalogGame(card);
+    }
+
     // Wire both catalog tabs to the same launcher.
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('#assignmentsGrid .item-card-tile, #quizGrid .item-card-tile')
@@ -2160,6 +2170,7 @@
           card.classList.add('launchable');
           card.addEventListener('click', () => launchCatalogGame(card));
         });
+      prepareHostedGameProxy().then(openRequestedHostedGame).catch(() => {});
     });
 
     // --- SEARCH LOGIC ---
