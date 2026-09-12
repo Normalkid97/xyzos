@@ -906,7 +906,17 @@
       font-size: 0.78rem;
     }
 
-    .browser-address span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .browser-address span { flex: 0 0 auto; color: var(--accent); }
+    .browser-address input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #d8d8d8;
+      font: inherit;
+    }
+    .browser-address input::placeholder { color: #777; }
 
     .scramjet-form {
       display: flex;
@@ -1484,17 +1494,17 @@
     <div class="browser-tab" aria-current="page"><strong>UV</strong><span>New Tab</span><span aria-hidden="true">×</span></div>
     <button class="browser-action" type="button" aria-label="New tab">+</button>
   </div>
-  <div class="browser-toolbar" aria-label="Browser navigation">
-    <button class="browser-nav" type="button" aria-label="Back" data-browser-back>‹</button>
-    <button class="browser-nav" type="button" aria-label="Forward" data-browser-forward>›</button>
-    <button class="browser-nav" type="button" aria-label="Reload" data-browser-reload>↻</button>
-    <div class="browser-address" aria-label="Current address"><span aria-hidden="true">●</span><span data-browser-address>Ready to browse</span></div>
-    <button class="browser-action" type="button" aria-label="More options">⋯</button>
-  </div>
-  <form class="scramjet-form" id="scramjet-form">
-        <input type="text" id="scramjet-address" class="search-input" placeholder="Enter a URL, for example example.com" autocomplete="url" required>
-        <button type="submit" id="scramjet-go">Go</button>
-      </form>
+  <form class="browser-toolbar" id="scramjet-form" aria-label="Browser navigation">
+  <button class="browser-nav" type="button" aria-label="Back" data-browser-back>‹</button>
+  <button class="browser-nav" type="button" aria-label="Forward" data-browser-forward>›</button>
+  <button class="browser-nav" type="button" aria-label="Reload" data-browser-reload>↻</button>
+  <label class="browser-address" aria-label="Address">
+    <span aria-hidden="true">●</span>
+    <input type="text" id="scramjet-address" placeholder="Enter a URL" autocomplete="url" required>
+  </label>
+  <button class="browser-action" type="submit" id="scramjet-go" aria-label="Go">↵</button>
+  <button class="browser-action" type="button" aria-label="More options">⋯</button>
+  </form>
       <p id="scramjet-status" role="status">Ready — enter a URL to browse</p>
       <div id="scramjet-frame-host" aria-label="Ultraviolet browsing view"></div>
     </div>

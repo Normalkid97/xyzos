@@ -5,7 +5,6 @@ const form = document.getElementById("scramjet-form");
 const frameHost = document.getElementById("scramjet-frame-host");
 const status = document.getElementById("scramjet-status");
 const goButton = document.getElementById("scramjet-go");
-const browserAddress = document.querySelector("[data-browser-address]");
 const backButton = document.querySelector("[data-browser-back]");
 const forwardButton = document.querySelector("[data-browser-forward]");
 const reloadButton = document.querySelector("[data-browser-reload]");
@@ -90,7 +89,7 @@ async function browse(event) {
     }, { once: true });
     frame.src = `${self.__uv$config.prefix}${self.__uv$config.encodeUrl(target)}`;
     frameHost.replaceChildren(frame);
-    browserAddress.textContent = target;
+    address.value = target;
     status.textContent = "Loading through Ultraviolet…";
   } catch (error) {
     status.textContent = error instanceof Error ? error.message : "Unable to start Ultraviolet.";
@@ -100,7 +99,19 @@ async function browse(event) {
 }
 
 form.addEventListener("submit", browse);
-backButton.addEventListener("click", () => frameHost.querySelector("iframe")?.contentWindow.history.back());
-forwardButton.addEventListener("click", () => frameHost.querySelector("iframe")?.contentWindow.history.forward());
-reloadButton.addEventListener("click", () => frameHost.querySelector("iframe")?.contentWindow.location.reload());
+function activeFrame() {
+  return frameHost.querySelector("iframe");
+}
+
+backButton.addEventListener("click", () => {
+  try { activeFrame()?.contentWindow.history.back(); } catch { status.textContent = "Back is unavailable for this page."; }
+});
+forwardButton.addEventListener("click", () => {
+  try { activeFrame()?.contentWindow.history.forward(); } catch { status.textContent = "Forward is unavailable for this page."; }
+});
+reloadButton.addEventListener("click", () => {
+  const frame = activeFrame();
+  if (frame) frame.contentWindow.location.reload();
+  else status.textContent = "Nothing to reload yet.";
+});
 status.textContent = "Ready — enter a URL to browse";
