@@ -12,7 +12,7 @@ function normalizeUrl(value) {
 
 async function registerUltraviolet() {
   if (!navigator.serviceWorker) throw new Error("Service workers are not supported.");
-  await navigator.serviceWorker.register("/search/uv/sw.js", { scope: "/search/" });
+  await navigator.serviceWorker.register("/search/sw.js", { scope: "/search/" });
   await navigator.serviceWorker.ready;
   if (!navigator.serviceWorker.controller) {
     await new Promise((resolve) => navigator.serviceWorker.addEventListener("controllerchange", resolve, { once: true }));
