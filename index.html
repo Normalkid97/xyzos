@@ -1375,8 +1375,9 @@
 
 
   <!-- JAVASCRIPT LOGIC -->
+  <script src="/search/uv/uv.bundle.js" data-uv-client></script>
   <script>
-    let highestZIndex = 100;
+  let highestZIndex = 100;
 
     // --- LIVE CLOCK ---
     function updateClock() {
@@ -1911,6 +1912,37 @@
         .replace(/^-+|-+$/g, '');
     }
 
+    let hostedProxyReady = null;
+
+    function prepareHostedGameProxy() {
+      if (hostedProxyReady) return hostedProxyReady;
+      hostedProxyReady = (async () => {
+        if (!window.Ultraviolet?.codec?.xor?.encode) {
+          throw new Error('Ultraviolet client is unavailable.');
+        }
+        if (!navigator.serviceWorker) {
+          throw new Error('Service workers are unavailable.');
+        }
+        const registration = await navigator.serviceWorker.register('/search/sw.js', { scope: '/search/' });
+        await registration.update();
+        if (!navigator.serviceWorker.controller) {
+          await new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true }));
+        }
+        if (!navigator.serviceWorker.controller) throw new Error('Ultraviolet is not controlling this page yet.');
+        window.__uv$config = {
+          prefix: '/search/service/',
+          encodeUrl: window.Ultraviolet.codec.xor.encode,
+          decodeUrl: window.Ultraviolet.codec.xor.decode,
+          handler: '/search/uv/uv.handler.js',
+          bundle: '/search/uv/uv.bundle.js',
+          config: '/search/uv/uv.config.js',
+          sw: '/search/uv/uv.sw.js'
+        };
+        return window.__uv$config;
+      })();
+      return hostedProxyReady;
+    }
+
     function launchCatalogGame(card) {
       if (!card) return;
 
@@ -1922,8 +1954,21 @@
       const title = titleEl ? titleEl.textContent.trim() : (game || 'Game');
       const targetUrl = externalUrl || `assignments/${encodeURIComponent(game)}/index.html`;
       const isHostedGame = Boolean(externalUrl);
-      const src = isHostedGame && window.Ultraviolet?.codec?.xor?.encode
-        ? `/search/service/${window.Ultraviolet.codec.xor.encode(targetUrl)}`
+
+      if (isHostedGame && !window.__uv$config) {
+        const proxyWindow = window.open('about:blank', '_blank', 'noopener,noreferrer');
+        prepareHostedGameProxy().then(() => {
+          const proxiedUrl = `${window.__uv$config.prefix}${window.__uv$config.encodeUrl(targetUrl)}`;
+          if (proxyWindow) proxyWindow.location.href = proxiedUrl;
+        }).catch(() => {
+          if (proxyWindow) proxyWindow.location.href = targetUrl;
+          else window.open(targetUrl, '_blank', 'noopener,noreferrer');
+        });
+        return;
+      }
+
+      const src = isHostedGame
+        ? `${window.__uv$config.prefix}${window.__uv$config.encodeUrl(targetUrl)}`
         : targetUrl;
 
       // Create a brand-new OS window every time, so multiple games/apps
@@ -2053,21 +2098,10 @@
       grid.prepend(fragment);
     }
 
-    async function prepareHostedGameProxy() {
-      if (!window.Ultraviolet?.codec?.xor?.encode) return;
-      if (!navigator.serviceWorker) return;
-      try {
-        const registration = await navigator.serviceWorker.register('/search/sw.js', { scope: '/search/' });
-        await registration.update();
-      } catch (error) {
-        console.warn('[v0] Hosted game proxy unavailable:', error);
-      }
-    }
-
     // Wire both catalog tabs to the same launcher.
     document.addEventListener('DOMContentLoaded', () => {
       renderLumiosGames();
-      prepareHostedGameProxy();
+      prepareHostedGameProxy().catch(() => {});
       document.querySelectorAll('#assignmentsGrid .item-card-tile, #quizGrid .item-card-tile')
         .forEach(card => {
           card.classList.add('launchable');
