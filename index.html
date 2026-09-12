@@ -418,6 +418,22 @@
       display: block;
     }
 
+    .game-tile-art {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      text-shadow: 0 3px 14px rgba(0, 0, 0, 0.55);
+    }
+
+    .game-tile-art-undertale { background: radial-gradient(circle at 70% 25%, #e34b4b, #241316 62%, #090909); }
+    .game-tile-art-deltarune { background: radial-gradient(circle at 30% 20%, #3f8cff, #111936 58%, #08090f); }
+    .game-tile-art-games { background: radial-gradient(circle at 50% 25%, #f59e0b, #25170b 58%, #090909); }
+
     .item-card-title {
       position: absolute;
       bottom: 0;
@@ -923,6 +939,18 @@
         <div class="item-card-tile launchable" data-title="1" data-game="1">
           <img src="/assignments/1/meta/apple-touch-icon.png" alt="1">
           <div class="item-card-title">1</div>
+        </div>
+        <div class="item-card-tile launchable" data-title="undertale" data-url="https://undertale.com/">
+          <div class="game-tile-art game-tile-art-undertale" aria-hidden="true">UT</div>
+          <div class="item-card-title">UNDERTALE</div>
+        </div>
+        <div class="item-card-tile launchable" data-title="deltarune" data-url="https://deltarune.com/">
+          <div class="game-tile-art game-tile-art-deltarune" aria-hidden="true">DR</div>
+          <div class="item-card-title">DELTARUNE</div>
+        </div>
+        <div class="item-card-tile launchable" data-title="g@mes" data-url="https://3kh0.net/">
+          <div class="game-tile-art game-tile-art-games" aria-hidden="true">G@</div>
+          <div class="item-card-title">G@MES</div>
         </div>
         <div class="item-card-tile launchable" data-title="1v1lol" data-game="1v1lol">
           <img src="/assignments/1/meta/apple-touch-icon.png" alt="1v1lol">
@@ -1887,11 +1915,12 @@
       if (!card) return;
 
       const game = gameFolderFromCard(card);
-      if (!game) return;
+      const externalUrl = card.getAttribute('data-url');
+      if (!game && !externalUrl) return;
 
       const titleEl = card.querySelector('.item-card-title');
-      const title = titleEl ? titleEl.textContent.trim() : game;
-      const src = `assignments/${encodeURIComponent(game)}/index.html`;
+      const title = titleEl ? titleEl.textContent.trim() : (game || 'Game');
+      const src = externalUrl || `assignments/${encodeURIComponent(game)}/index.html`;
 
       // Create a brand-new OS window every time, so multiple games/apps
       // can be open simultaneously.
