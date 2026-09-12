@@ -1666,8 +1666,13 @@
       window.location.replace(userSettings.panicUrl || 'https://www.google.com/');
     }
 
-    // Open the cloaked app as soon as the top-level site finishes loading.
-    window.addEventListener('load', openInAboutBlank, { once: true });
+    // Attempt immediately and again after load; browsers may block automatic popups
+    // unless the opener was triggered by a user gesture.
+    if (document.readyState === 'complete') {
+      openInAboutBlank();
+    } else {
+      window.addEventListener('load', openInAboutBlank, { once: true });
+    }
 
     // --- 6. PANIC BUTTON SYSTEM ---
     let isCapturingPanicKey = false;
