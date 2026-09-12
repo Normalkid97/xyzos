@@ -1920,7 +1920,11 @@
 
       const titleEl = card.querySelector('.item-card-title');
       const title = titleEl ? titleEl.textContent.trim() : (game || 'Game');
-      const src = externalUrl || `assignments/${encodeURIComponent(game)}/index.html`;
+      const targetUrl = externalUrl || `assignments/${encodeURIComponent(game)}/index.html`;
+      const isHostedGame = Boolean(externalUrl);
+      const src = isHostedGame && window.Ultraviolet?.codec?.xor?.encode
+        ? `/search/service/${window.Ultraviolet.codec.xor.encode(targetUrl)}`
+        : targetUrl;
 
       // Create a brand-new OS window every time, so multiple games/apps
       // can be open simultaneously.
@@ -1951,6 +1955,20 @@
       `;
 
       document.body.appendChild(win);
+
+      const frame = win.querySelector('iframe');
+      if (frame && isHostedGame) {
+        frame.addEventListener('load', () => {
+          try {
+            const frameDocument = frame.contentDocument;
+            if (frameDocument && /refused to connect|this site can.t be reached/i.test(frameDocument.body?.textContent || '')) {
+              window.open(targetUrl, '_blank', 'noopener,noreferrer');
+            }
+          } catch {
+            // Cross-origin frames cannot be inspected; a successful load is sufficient.
+          }
+        }, { once: true });
+      }
 
       // Make the newly-created window behave exactly like the built-in windows.
       win.addEventListener('mousedown', () => bringToFront(win));
@@ -2035,9 +2053,21 @@
       grid.prepend(fragment);
     }
 
+    async function prepareHostedGameProxy() {
+      if (!window.Ultraviolet?.codec?.xor?.encode) return;
+      if (!navigator.serviceWorker) return;
+      try {
+        const registration = await navigator.serviceWorker.register('/search/sw.js', { scope: '/search/' });
+        await registration.update();
+      } catch (error) {
+        console.warn('[v0] Hosted game proxy unavailable:', error);
+      }
+    }
+
     // Wire both catalog tabs to the same launcher.
     document.addEventListener('DOMContentLoaded', () => {
       renderLumiosGames();
+      prepareHostedGameProxy();
       document.querySelectorAll('#assignmentsGrid .item-card-tile, #quizGrid .item-card-tile')
         .forEach(card => {
           card.classList.add('launchable');
