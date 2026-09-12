@@ -19,11 +19,16 @@ function normalizeUrl(value) {
 
 async function registerScramjet() {
   if (!navigator.serviceWorker) throw new Error("Service workers are not supported.");
-  try {
-    indexedDB.deleteDatabase("$scramjet");
-  } catch {
-    // Ignore unavailable IndexedDB databases.
-  }
+  await new Promise((resolve, reject) => {
+    const request = indexedDB.open("$scramjet", 1);
+    request.onupgradeneeded = () => {
+      for (const store of ["config", "cookies", "redirectTrackers", "referrerPolicies", "publicSuffixList"]) {
+        if (!request.result.objectStoreNames.contains(store)) request.result.createObjectStore(store);
+      }
+    };
+    request.onsuccess = () => { request.result.close(); resolve(); };
+    request.onerror = () => reject(request.error);
+  });
   await navigator.serviceWorker.register("/search/sw.js", { scope: "/search/" });
   const registration = await navigator.serviceWorker.ready;
   if (!navigator.serviceWorker.controller) {
@@ -41,12 +46,7 @@ async function registerScramjet() {
       sync: "/search/scram/scramjet.sync.js",
     },
   });
-  try {
-    await scramjet.init();
-  } catch (error) {
-    indexedDB.deleteDatabase("$scramjet");
-    throw error;
-  }
+  await scramjet.init();
   connection = new BareMuxConnection("/search/baremux/worker.js");
 }
 
