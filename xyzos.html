@@ -735,6 +735,49 @@
 
     .action-btn:hover { filter: brightness(1.2); }
 
+    /* --- EMBEDDED GAME / APP WINDOWS --- */
+    .game-frame-body {
+      padding: 0 !important;
+      overflow: hidden !important;
+      display: flex;
+      background: #000;
+    }
+
+    .game-frame-body iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: #000;
+    }
+
+    .item-card-tile.launchable {
+      cursor: pointer;
+    }
+
+    .item-card-tile.launchable::after {
+      content: "▶";
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.72);
+      color: var(--accent);
+      font-size: 0.65rem;
+      border: 1px solid var(--panel-border);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .item-card-tile.launchable:hover::after {
+      opacity: 1;
+    }
+
     /* Search Grid */
     .search-input {
       width: 100%;
@@ -866,83 +909,83 @@
 
       <!-- 5-Column Grid -->
       <div class="catalog-grid" id="assignmentsGrid">
-        <div class="item-card-tile" data-title="slope 3d">
+        <div class="item-card-tile launchable" data-title="slope 3d" data-game="slope-3d">
           <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Slope 3D">
           <div class="item-card-title">SLOPE 3D</div>
         </div>
-        <div class="item-card-tile" data-title="cube run">
+        <div class="item-card-tile launchable" data-title="cube run" data-game="cube-run">
           <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=300&q=80" alt="Cube Run">
           <div class="item-card-title">CUBE RUN</div>
         </div>
-        <div class="item-card-tile" data-title="tunnel rush">
+        <div class="item-card-tile launchable" data-title="tunnel rush" data-game="tunnel-rush">
           <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=300&q=80" alt="Tunnel Rush">
           <div class="item-card-title">3D TUNNEL</div>
         </div>
-        <div class="item-card-tile" data-title="speed 3d">
+        <div class="item-card-tile launchable" data-title="speed 3d" data-game="speed-3d">
           <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80" alt="Speed 3D">
           <div class="item-card-title">SPEED 3D</div>
         </div>
-        <div class="item-card-tile" data-title="big tower tiny square">
+        <div class="item-card-tile launchable" data-title="big tower tiny square" data-game="big-tower-tiny-square">
           <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=300&q=80" alt="Big Tower">
           <div class="item-card-title">BIG TOWER</div>
         </div>
-        <div class="item-card-tile" data-title="cluster rush">
+        <div class="item-card-tile launchable" data-title="cluster rush" data-game="cluster-rush">
           <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=300&q=80" alt="Cluster Rush">
           <div class="item-card-title">CLUSTER RUSH</div>
         </div>
-        <div class="item-card-tile" data-title="neon flow">
+        <div class="item-card-tile launchable" data-title="neon flow" data-game="neon-flow">
           <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=300&q=80" alt="Neon Flow">
           <div class="item-card-title">NEON FLOW</div>
         </div>
-        <div class="item-card-tile" data-title="top driver">
+        <div class="item-card-tile launchable" data-title="top driver" data-game="top-driver">
           <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=300&q=80" alt="Top Driver">
           <div class="item-card-title">TOP DRIVER</div>
         </div>
-        <div class="item-card-tile" data-title="tuner racer">
+        <div class="item-card-tile launchable" data-title="tuner racer" data-game="tuner-racer">
           <img src="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=300&q=80" alt="Tuner Racer">
           <div class="item-card-title">TUNER RACER</div>
         </div>
-        <div class="item-card-tile" data-title="duck life">
+        <div class="item-card-tile launchable" data-title="duck life" data-game="duck-life">
           <img src="https://images.unsplash.com/photo-1555852095-64e7428df0fa?auto=format&fit=crop&w=300&q=80" alt="Duck Life">
           <div class="item-card-title">DUCK LIFE</div>
         </div>
-        <div class="item-card-tile" data-title="gun night">
+        <div class="item-card-tile launchable" data-title="gun night" data-game="gun-night">
           <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=300&q=80" alt="Gun Night">
           <div class="item-card-title">GUN NIGHT</div>
         </div>
-        <div class="item-card-tile" data-title="rise higher">
+        <div class="item-card-tile launchable" data-title="rise higher" data-game="rise-higher">
           <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=300&q=80" alt="Rise Higher">
           <div class="item-card-title">RISE HIGHER</div>
         </div>
-        <div class="item-card-tile" data-title="night driver">
+        <div class="item-card-tile launchable" data-title="night driver" data-game="night-driver">
           <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=300&q=80" alt="Night Driver">
           <div class="item-card-title">NIGHT DRIVER</div>
         </div>
-        <div class="item-card-tile" data-title="madalin stunt cars 2">
+        <div class="item-card-tile launchable" data-title="madalin stunt cars 2" data-game="madalin-stunt-cars-2">
           <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=300&q=80" alt="Madalin Stunt 2">
           <div class="item-card-title">MADALIN STUNT 2</div>
         </div>
-        <div class="item-card-tile" data-title="water rider">
+        <div class="item-card-tile launchable" data-title="water rider" data-game="water-rider">
           <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80" alt="Water Rider">
           <div class="item-card-title">WATER RIDER</div>
         </div>
-        <div class="item-card-tile" data-title="escape road 2">
+        <div class="item-card-tile launchable" data-title="escape road 2" data-game="escape-road-2">
           <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=300&q=80" alt="Escape Road 2">
           <div class="item-card-title">ESCAPE ROAD 2</div>
         </div>
-        <div class="item-card-tile" data-title="escape road 3">
+        <div class="item-card-tile launchable" data-title="escape road 3" data-game="escape-road-3">
           <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=300&q=80" alt="Escape Road 3">
           <div class="item-card-title">ESCAPE ROAD 3</div>
         </div>
-        <div class="item-card-tile" data-title="pac runner">
+        <div class="item-card-tile launchable" data-title="pac runner" data-game="pac-runner">
           <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=300&q=80" alt="Pac Runner">
           <div class="item-card-title">PAC RUNNER</div>
         </div>
-        <div class="item-card-tile" data-title="madalin stunt cars 3">
+        <div class="item-card-tile launchable" data-title="madalin stunt cars 3" data-game="madalin-stunt-cars-3">
           <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=300&q=80" alt="Madalin Stunt 3">
           <div class="item-card-title">MADALIN STUNT 3</div>
         </div>
-        <div class="item-card-tile" data-title="heavy truck">
+        <div class="item-card-tile launchable" data-title="heavy truck" data-game="heavy-truck">
           <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=300&q=80" alt="Heavy Truck">
           <div class="item-card-title">HEAVY TRUCK</div>
         </div>
@@ -983,83 +1026,83 @@
 
       <!-- 5-Column Grid -->
       <div class="catalog-grid" id="quizGrid">
-        <div class="item-card-tile" data-title="math challenge">
+        <div class="item-card-tile launchable" data-title="math challenge" data-game="math-challenge">
           <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=300&q=80" alt="Math Challenge">
           <div class="item-card-title">MATH CHALLENGE</div>
         </div>
-        <div class="item-card-tile" data-title="algebra dash">
+        <div class="item-card-tile launchable" data-title="algebra dash" data-game="algebra-dash">
           <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=300&q=80" alt="Algebra Dash">
           <div class="item-card-title">ALGEBRA DASH</div>
         </div>
-        <div class="item-card-tile" data-title="geo trivia">
+        <div class="item-card-tile launchable" data-title="geo trivia" data-game="geo-trivia">
           <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=300&q=80" alt="Geo Trivia">
           <div class="item-card-title">GEO TRIVIA</div>
         </div>
-        <div class="item-card-tile" data-title="science lab">
+        <div class="item-card-tile launchable" data-title="science lab" data-game="science-lab">
           <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=300&q=80" alt="Science Lab">
           <div class="item-card-title">SCIENCE LAB</div>
         </div>
-        <div class="item-card-tile" data-title="history quest">
+        <div class="item-card-tile launchable" data-title="history quest" data-game="history-quest">
           <img src="https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=300&q=80" alt="History Quest">
           <div class="item-card-title">HISTORY QUEST</div>
         </div>
-        <div class="item-card-tile" data-title="word puzzle">
+        <div class="item-card-tile launchable" data-title="word puzzle" data-game="word-puzzle">
           <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=300&q=80" alt="Word Puzzle">
           <div class="item-card-title">WORD PUZZLE</div>
         </div>
-        <div class="item-card-tile" data-title="spelling bee">
+        <div class="item-card-tile launchable" data-title="spelling bee" data-game="spelling-bee">
           <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=300&q=80" alt="Spelling Bee">
           <div class="item-card-title">SPELLING BEE</div>
         </div>
-        <div class="item-card-tile" data-title="physics test">
+        <div class="item-card-tile launchable" data-title="physics test" data-game="physics-test">
           <img src="https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?auto=format&fit=crop&w=300&q=80" alt="Physics Test">
           <div class="item-card-title">PHYSICS TEST</div>
         </div>
-        <div class="item-card-tile" data-title="chem reaction">
+        <div class="item-card-tile launchable" data-title="chem reaction" data-game="chem-reaction">
           <img src="https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=300&q=80" alt="Chem Reaction">
           <div class="item-card-title">CHEM REACTION</div>
         </div>
-        <div class="item-card-tile" data-title="bio quiz 3d">
+        <div class="item-card-tile launchable" data-title="bio quiz 3d" data-game="bio-quiz-3d">
           <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=300&q=80" alt="Bio Quiz 3D">
           <div class="item-card-title">BIO QUIZ 3D</div>
         </div>
-        <div class="item-card-tile" data-title="pop culture trivia">
+        <div class="item-card-tile launchable" data-title="pop culture trivia" data-game="pop-culture-trivia">
           <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=300&q=80" alt="Pop Culture Trivia">
           <div class="item-card-title">POP TRIVIA</div>
         </div>
-        <div class="item-card-tile" data-title="flag master">
+        <div class="item-card-tile launchable" data-title="flag master" data-game="flag-master">
           <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=300&q=80" alt="Flag Master">
           <div class="item-card-title">FLAG MASTER</div>
         </div>
-        <div class="item-card-tile" data-title="logic grid">
+        <div class="item-card-tile launchable" data-title="logic grid" data-game="logic-grid">
           <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Logic Grid">
           <div class="item-card-title">LOGIC GRID</div>
         </div>
-        <div class="item-card-tile" data-title="memory match">
+        <div class="item-card-tile launchable" data-title="memory match" data-game="memory-match">
           <img src="https://images.unsplash.com/photo-1606168094336-48f205276929?auto=format&fit=crop&w=300&q=80" alt="Memory Match">
           <div class="item-card-title">MEMORY MATCH</div>
         </div>
-        <div class="item-card-tile" data-title="speed math">
+        <div class="item-card-tile launchable" data-title="speed math" data-game="speed-math">
           <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80" alt="Speed Math">
           <div class="item-card-title">SPEED MATH</div>
         </div>
-        <div class="item-card-tile" data-title="brain teaser">
+        <div class="item-card-tile launchable" data-title="brain teaser" data-game="brain-teaser">
           <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=300&q=80" alt="Brain Teaser">
           <div class="item-card-title">BRAIN TEASER</div>
         </div>
-        <div class="item-card-tile" data-title="code quiz">
+        <div class="item-card-tile launchable" data-title="code quiz" data-game="code-quiz">
           <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=300&q=80" alt="Code Quiz">
           <div class="item-card-title">CODE QUIZ</div>
         </div>
-        <div class="item-card-tile" data-title="space trivia">
+        <div class="item-card-tile launchable" data-title="space trivia" data-game="space-trivia">
           <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=300&q=80" alt="Space Trivia">
           <div class="item-card-title">SPACE TRIVIA</div>
         </div>
-        <div class="item-card-tile" data-title="world capitals">
+        <div class="item-card-tile launchable" data-title="world capitals" data-game="world-capitals">
           <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=300&q=80" alt="World Capitals">
           <div class="item-card-title">CAPITALS</div>
         </div>
-        <div class="item-card-tile" data-title="quick IQ">
+        <div class="item-card-tile launchable" data-title="quick IQ" data-game="quick-iq">
           <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80" alt="Quick IQ">
           <div class="item-card-title">QUICK IQ</div>
         </div>
@@ -1736,6 +1779,14 @@
 
     function closeWindow(winId) {
       const win = document.getElementById(winId);
+      if (!win) return;
+
+      if (win.classList.contains('game-app-window')) {
+        win.remove();
+        updateMinimizedTray();
+        return;
+      }
+
       const navBtn = document.getElementById('nav-' + winId.replace('win-', ''));
       win.classList.remove('open', 'minimized', 'fullscreen');
       if (navBtn) navBtn.classList.remove('active');
@@ -1780,6 +1831,116 @@
           document.onmouseup = null;
         };
       });
+    });
+
+    // --- ASSIGNMENT / QUIZ GAME LAUNCHER ---
+    // Every launchable tile opens /assignments/<game>/index.html
+    // inside its own XYZ-YA! OS window. Multiple games can stay open at once.
+    function gameFolderFromCard(card) {
+      const explicitGame = card.getAttribute('data-game');
+      if (explicitGame && explicitGame.trim()) {
+        return explicitGame.trim();
+      }
+
+      const title = card.getAttribute('data-title') || '';
+      return title
+        .trim()
+        .toLowerCase()
+        .replace(/&/g, 'and')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function launchCatalogGame(card) {
+      if (!card) return;
+
+      const game = gameFolderFromCard(card);
+      if (!game) return;
+
+      const titleEl = card.querySelector('.item-card-title');
+      const title = titleEl ? titleEl.textContent.trim() : game;
+      const src = `/assignments/${encodeURIComponent(game)}/index.html`;
+
+      // Create a brand-new OS window every time, so multiple games/apps
+      // can be open simultaneously.
+      highestZIndex++;
+
+      const win = document.createElement('div');
+      win.className = 'os-window open';
+      win.id = 'game-window-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+      win.style.width = '900px';
+      win.style.height = '650px';
+      win.style.top = Math.max(30, 70 + (document.querySelectorAll('.os-window.game-app-window').length * 24) % 180) + 'px';
+      win.style.left = Math.max(30, 230 + (document.querySelectorAll('.os-window.game-app-window').length * 24) % 240) + 'px';
+      win.style.zIndex = highestZIndex;
+      win.classList.add('game-app-window');
+
+      win.innerHTML = `
+        <div class="window-header">
+          <div class="window-title">🎮 ${escapeHtml(title)}</div>
+          <div class="window-controls">
+            <button class="win-btn hide" onclick="hideWindow('${win.id}')">−</button>
+            <button class="win-btn max" onclick="fullscreenWindow('${win.id}')">□</button>
+            <button class="win-btn close" onclick="closeWindow('${win.id}')">✕</button>
+          </div>
+        </div>
+        <div class="window-body game-frame-body">
+          <iframe src="${src}" title="${escapeHtml(title)}" allow="fullscreen; autoplay; gamepad"></iframe>
+        </div>
+      `;
+
+      document.body.appendChild(win);
+
+      // Make the newly-created window behave exactly like the built-in windows.
+      win.addEventListener('mousedown', () => bringToFront(win));
+      const header = win.querySelector('.window-header');
+
+      header.addEventListener('mousedown', function (e) {
+        if (e.target.classList.contains('win-btn')) return;
+        if (win.classList.contains('fullscreen')) return;
+
+        bringToFront(win);
+
+        const rect = win.getBoundingClientRect();
+        const shiftX = e.clientX - rect.left;
+        const shiftY = e.clientY - rect.top;
+
+        function moveAt(pageX, pageY) {
+          win.style.left = pageX - shiftX + 'px';
+          win.style.top = pageY - shiftY + 'px';
+        }
+
+        function onMouseMove(e) {
+          moveAt(e.clientX, e.clientY);
+        }
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.onmouseup = function () {
+          document.removeEventListener('mousemove', onMouseMove);
+          document.onmouseup = null;
+        };
+      });
+
+      return win;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, ch => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch]));
+    }
+
+    // Wire both catalog tabs to the same launcher.
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('#assignmentsGrid .item-card-tile, #quizGrid .item-card-tile')
+        .forEach(card => {
+          card.classList.add('launchable');
+          card.addEventListener('click', () => launchCatalogGame(card));
+        });
     });
 
     // --- SEARCH LOGIC ---
