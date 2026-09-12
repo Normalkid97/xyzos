@@ -1325,7 +1325,7 @@
       </div>
     </div>
   <div class="window-body">
-  <iframe class="search-embed" src="/search/index.html" title="Search app" loading="lazy"></iframe>
+  <iframe class="search-embed" src="/search/index.html#proxy" title="Search app" loading="eager"></iframe>
   </div>
 
   </div>
@@ -1650,7 +1650,26 @@
       }
     }
 
-    // --- 5. PANIC BUTTON SYSTEM ---
+    // --- 5. ABOUT:BLANK CLOAK ---
+    let aboutBlankOpened = false;
+
+    function openInAboutBlank() {
+      if (aboutBlankOpened || window.self !== window.top) return;
+
+      const cloak = cloakPresets[userSettings.cloak] || cloakPresets.default;
+      const popup = window.open('about:blank', '_blank');
+      if (!popup) return;
+
+      aboutBlankOpened = true;
+      popup.document.write(`<!doctype html><html><head><title>${cloak.title}</title><link rel="icon" href="${cloak.icon}"><style>html,body,iframe{width:100%;height:100%;margin:0;border:0;overflow:hidden;background:#0a0705}iframe{display:block}</style></head><body><iframe src="${location.href}" title="XYZ-YA! OS"></iframe></body></html>`);
+      popup.document.close();
+      window.location.replace(userSettings.panicUrl || 'https://www.google.com/');
+    }
+
+    // Open the cloaked app as soon as the top-level site finishes loading.
+    window.addEventListener('load', openInAboutBlank, { once: true });
+
+    // --- 6. PANIC BUTTON SYSTEM ---
     let isCapturingPanicKey = false;
 
     function startPanicKeyCapture() {
@@ -1961,56 +1980,8 @@
       });
     }
 
-    // --- ABOUT:BLANK CLOAKING ---
-    let hasOpenedAboutBlank = false;
-    let hasShownPopupBlockedAlert = false;
-
-    function showPopupBlockedAlert() {
-      if (hasShownPopupBlockedAlert) return;
-      hasShownPopupBlockedAlert = true;
-      alert('Right now you have pop-ups turned off and will make the site blocked, so copy this url: chrome://settings/content/popups and allow pop-ups and redirects');
-    }
-
-    function openInAboutBlank() {
-      if (window.self !== window.top || hasOpenedAboutBlank) return;
-
-      let newWindow;
-      try {
-        newWindow = window.open('about:blank', '_blank');
-      } catch (e) {
-        newWindow = null;
-      }
-
-      if (newWindow && !newWindow.closed) {
-        hasOpenedAboutBlank = true;
-
-        const cloak = cloakPresets[userSettings.cloak] || cloakPresets.default;
-
-        newWindow.document.write(`
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>${cloak.title}</title>
-            <link id="tab-favicon" rel="icon" href="${cloak.icon}">
-            <style>
-              html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; background: #0a0705; }
-              iframe { width: 100%; height: 100%; border: none; }
-            </style>
-          </head>
-          <body>
-            <iframe src="${window.location.href}"></iframe>
-          </body>
-          </html>
-        `);
-        newWindow.document.close();
-        window.location.replace('https://www.google.com');
-      } else {
-        showPopupBlockedAlert();
-      }
-    }
-
-    window.addEventListener('load', openInAboutBlank);
-    document.addEventListener('click', openInAboutBlank, { once: true });
+    // Keep the site in its real tab so the embedded Search app can initialize
+    // its same-origin Scramjet service worker and proxy controls.
   </script>
 </body>
 </html>
