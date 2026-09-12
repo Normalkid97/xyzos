@@ -1396,7 +1396,7 @@
   <!-- SEARCH WINDOW -->
   <div class="os-window" id="win-search" style="width: 760px; height: 560px; top: 100px; left: 220px;">
     <div class="window-header">
-      <div class="window-title">🔍 Scramjet Search</div>
+      <div class="window-title">🔍 Ultraviolet Proxy</div>
       <div class="window-controls">
         <button class="win-btn hide" onclick="hideWindow('win-search')">−</button>
         <button class="win-btn max" onclick="fullscreenWindow('win-search')">□</button>
@@ -1408,8 +1408,8 @@
         <input type="text" id="scramjet-address" class="search-input" placeholder="Enter a URL, for example example.com" autocomplete="url" required>
         <button type="submit" id="scramjet-go">Go</button>
       </form>
-      <p id="scramjet-status" role="status">Loading Scramjet…</p>
-      <div id="scramjet-frame-host" aria-label="Scramjet browsing view"></div>
+      <p id="scramjet-status" role="status">Loading Ultraviolet…</p>
+      <div id="scramjet-frame-host" aria-label="Ultraviolet browsing view"></div>
     </div>
   </div>
 
@@ -2045,7 +2045,7 @@
     }
 
     // The embedded Search app stays in its parent iframe so service-worker scope and
-    // Scramjet navigation remain on the same origin and path.
+    // Ultraviolet navigation remains on the same origin and path.
     if (window.self !== window.top && window.location.hash === '#proxy') {
       document.documentElement.classList.add('proxy-only');
       window.addEventListener('load', () => {
@@ -2055,6 +2055,8 @@
     }
   </script>
   <script src="/search/scram/scramjet.all.js"></script>
-  <script type="module" src="/search/scramjet-browser.js"></script>
+  <script src="/search/uv/uv.bundle.js"></script>
+  <script src="/search/uv/uv.client.js"></script>
+  <script src="/search/ultraviolet-browser.js"></script>
 </body>
 </html>
