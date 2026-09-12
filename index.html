@@ -939,7 +939,7 @@
       <!-- Header Title -->
       <div class="catalog-header">
         <h2 class="catalog-title">assignments</h2>
-            <div class="catalog-count">2,725 games</div>
+            <div class="catalog-count">Local games</div>
       </div>
 
       <!-- Search Bar -->
@@ -954,18 +954,6 @@
         <div class="item-card-tile launchable" data-title="1" data-game="1">
           <img src="/assignments/1/meta/apple-touch-icon.png" alt="1">
           <div class="item-card-title">1</div>
-        </div>
-        <div class="item-card-tile launchable" data-title="undertale" data-url="https://undertale.com/">
-          <div class="game-tile-art game-tile-art-undertale" aria-hidden="true">UT</div>
-          <div class="item-card-title">UNDERTALE</div>
-        </div>
-        <div class="item-card-tile launchable" data-title="deltarune" data-url="https://deltarune.com/">
-          <div class="game-tile-art game-tile-art-deltarune" aria-hidden="true">DR</div>
-          <div class="item-card-title">DELTARUNE</div>
-        </div>
-        <div class="item-card-tile launchable" data-title="g@mes" data-url="https://3kh0.net/">
-          <div class="game-tile-art game-tile-art-games" aria-hidden="true">G@</div>
-          <div class="item-card-title">G@MES</div>
         </div>
         <div class="item-card-tile launchable" data-title="1v1lol" data-game="1v1lol">
           <img src="/assignments/1/meta/apple-touch-icon.png" alt="1v1lol">
@@ -1390,7 +1378,6 @@
 
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/search/uv/uv.bundle.js" data-uv-client></script>
   <script>
   let highestZIndex = 100;
 
@@ -1927,65 +1914,15 @@
         .replace(/^-+|-+$/g, '');
     }
 
-    let hostedProxyReady = null;
-
-    function prepareHostedGameProxy() {
-      if (hostedProxyReady) return hostedProxyReady;
-      hostedProxyReady = (async () => {
-        if (!window.Ultraviolet?.codec?.xor?.encode) {
-          throw new Error('Ultraviolet client is unavailable.');
-        }
-        if (!navigator.serviceWorker) {
-          throw new Error('Service workers are unavailable.');
-        }
-        const registration = await navigator.serviceWorker.register('/search/sw.js', { scope: '/search/' });
-        await registration.update();
-        if (!navigator.serviceWorker.controller) {
-          await new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true }));
-        }
-        if (!navigator.serviceWorker.controller) throw new Error('Ultraviolet is not controlling this page yet.');
-        window.__uv$config = {
-          prefix: '/search/service/',
-          encodeUrl: window.Ultraviolet.codec.xor.encode,
-          decodeUrl: window.Ultraviolet.codec.xor.decode,
-          handler: '/search/uv/uv.handler.js',
-          bundle: '/search/uv/uv.bundle.js',
-          config: '/search/uv/uv.config.js',
-          sw: '/search/uv/uv.sw.js'
-        };
-        return window.__uv$config;
-      })();
-      return hostedProxyReady;
-    }
-
     function launchCatalogGame(card) {
       if (!card) return;
 
       const game = gameFolderFromCard(card);
-      const externalUrl = card.getAttribute('data-url');
-      if (!game && !externalUrl) return;
+      if (!game) return;
 
       const titleEl = card.querySelector('.item-card-title');
-      const title = titleEl ? titleEl.textContent.trim() : (game || 'Game');
-      const targetUrl = externalUrl || `assignments/${encodeURIComponent(game)}/index.html`;
-      const isHostedGame = Boolean(externalUrl);
-
-      if (isHostedGame && !window.__uv$config) {
-        const proxyUrl = `/search/index.html?game=${encodeURIComponent(targetUrl)}#proxy`;
-        const proxyWindow = window.open(proxyUrl, '_blank', 'noopener,noreferrer');
-        if (!proxyWindow) {
-          const notice = document.createElement('div');
-          notice.className = 'game-launch-notice';
-          notice.textContent = 'Enable pop-ups to open this hosted game.';
-          document.body.appendChild(notice);
-          setTimeout(() => notice.remove(), 4000);
-        }
-        return;
-      }
-
-      const src = isHostedGame
-        ? `${window.__uv$config.prefix}${window.__uv$config.encodeUrl(targetUrl)}`
-        : targetUrl;
+      const title = titleEl ? titleEl.textContent.trim() : game;
+      const src = `assignments/${encodeURIComponent(game)}/index.html`;
 
       // Create a brand-new OS window every time, so multiple games/apps
       // can be open simultaneously.
@@ -2074,50 +2011,8 @@
       }[ch]));
     }
 
-    const lumiosGames = [
-      ['Valorant', 'valorant.jpeg', 'valorant.html'],
-      ['Fnaf 2', 'fnaf2.jpeg', 'fnaf2.html'],
-      ['Fnaf 3', 'fnaf3.jpeg', 'fnaf3.html'],
-      ['Fnaf 4', 'fnaf4.jpeg', 'FNAF4.html'],
-      ['Fnaf Sister Location', 'fnafsl.jpeg', 'FNAFSL.html'],
-      ['Terraria', 'terraria.png', 'Terraria 1.0.html'],
-      ['Geodash', 'geometryDash.jpeg', 'Geo-dash.html'],
-      ['Evil Glitch', 'evil-glitch.jpeg', 'EvilGlitch.html'],
-      ['Sandgame', 'sandgame.jpg', 'sandgame-js.html'],
-      ['Sandboxels', 'sandboxels.jpeg', 'sandboxels.r74n.html'],
-      ['Doodle Jump', 'doodlejump.jpeg', 'doodlejump.html'],
-      ['Monkeymart', 'monkeymart.jpeg', 'Monkeymart.html'],
-      ['Edge Not Found', 'edgenotfound.jpeg', 'edgenotfound.html'],
-      ['Just One Boss', 'justoneboss.png', 'justoneboss.html'],
-      ['You Are Jeff Bezos', 'youarejeffbezos.png', 'youarejeffbezos.html'],
-      ['Backrooms', 'backrooms.jpeg', 'Backrooms.html'],
-      ['Eaglercraft 1.5.2', 'eaglercraft.png', 'eaglercraft.1.5.2.html'],
-      ['Eaglercraft 1.8', 'eaglercraft.png', 'eaglercraft.1.8.html'],
-      ['xx142-b2.exe', 'xxb2exe.jpeg', 'b2exe.html'],
-      ['Blackhole Black Square', 'blackholeblacksquare.jpeg', 'BlackHoleBlackSquare.html'],
-      ['Konnekt', 'konnekt.png', 'Konnekt.html']
-    ];
-
-    function renderLumiosGames() {
-      const grid = document.getElementById('assignmentsGrid');
-      if (!grid) return;
-      const base = 'https://raw.githubusercontent.com/LuminesenceProject/lumi-games/main/';
-      const fragment = document.createDocumentFragment();
-      lumiosGames.forEach(([name, image, gamePath]) => {
-        const card = document.createElement('div');
-        card.className = 'item-card-tile launchable';
-        card.dataset.title = name.toLowerCase();
-        card.dataset.url = `${base}games/${encodeURIComponent(gamePath).replace(/%2F/g, '/')}`;
-        card.innerHTML = `<img src="${base}images/${image}" alt="${escapeHtml(name)}" loading="lazy"><div class="item-card-title">${escapeHtml(name)}</div>`;
-        fragment.appendChild(card);
-      });
-      grid.prepend(fragment);
-    }
-
     // Wire both catalog tabs to the same launcher.
     document.addEventListener('DOMContentLoaded', () => {
-      renderLumiosGames();
-      prepareHostedGameProxy().catch(() => {});
       document.querySelectorAll('#assignmentsGrid .item-card-tile, #quizGrid .item-card-tile')
         .forEach(card => {
           card.classList.add('launchable');
@@ -2135,8 +2030,6 @@
       });
     }
 
-    // Keep the site in its real tab so the embedded Search app can initialize
-    // its same-origin Ultraviolet service worker and proxy controls.
   </script>
 </body>
 </html>
