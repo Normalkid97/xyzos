@@ -1955,6 +1955,13 @@
 
     // --- ABOUT:BLANK CLOAKING ---
     let hasOpenedAboutBlank = false;
+    let hasShownPopupBlockedAlert = false;
+
+    function showPopupBlockedAlert() {
+      if (hasShownPopupBlockedAlert) return;
+      hasShownPopupBlockedAlert = true;
+      alert('Right now you have pop-ups turned off and will make the site blocked, so copy this url: chrome://settings/content/popups and allow pop-ups and redirects');
+    }
 
     function openInAboutBlank() {
       if (window.self !== window.top || hasOpenedAboutBlank) return;
@@ -1989,6 +1996,8 @@
         `);
         newWindow.document.close();
         window.location.replace('https://www.google.com');
+      } else {
+        showPopupBlockedAlert();
       }
     }
 
