@@ -1,3 +1,5 @@
+import { BareMuxConnection } from "/search/baremux/index.mjs";
+
 const address = document.getElementById("scramjet-address");
 const form = document.getElementById("scramjet-form");
 const frameHost = document.getElementById("scramjet-frame-host");
@@ -10,10 +12,15 @@ function normalizeUrl(value) {
   return /^[a-z][a-z\d+.-]*:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 }
 
+let transport;
+
 async function registerUltraviolet() {
   if (!navigator.serviceWorker) throw new Error("Service workers are not supported.");
   const registration = await navigator.serviceWorker.register("/search/sw.js", { scope: "/search/" });
   await registration.update();
+  if (!transport) transport = new BareMuxConnection("/search/baremux/worker.js");
+  const bareUrl = `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/search/service/`;
+  await transport.setTransport("/search/libcurl/index.mjs", [{ websocket: bareUrl }]);
   self.__uv$config = {
     prefix: "/search/service/",
     encodeUrl: Ultraviolet.codec.xor.encode,
