@@ -1834,8 +1834,8 @@
     });
 
     // --- ASSIGNMENT / QUIZ GAME LAUNCHER ---
-    // Each launchable tile opens its own /assignments/<game>/index.html
-    // inside its own XYZ-YA! OS window. Multiple games can stay open at once.
+  // Each launchable tile opens its matching game from the public 3kh0-assets GitLab repository
+  // inside its own XYZ-YA! OS window. Multiple games can stay open at once.
     function gameFolderFromCard(card) {
       const explicitGame = card.getAttribute('data-game');
       if (explicitGame && explicitGame.trim()) {
@@ -1859,7 +1859,7 @@
 
       const titleEl = card.querySelector('.item-card-title');
       const title = titleEl ? titleEl.textContent.trim() : game;
-      const src = `/assignments/${encodeURIComponent(game)}/index.html`;
+      const src = `https://gitlab.com/3kh0/3kh0-assets/-/raw/main/${encodeURIComponent(game)}/index.html`;
 
       // Create a brand-new OS window every time, so multiple games/apps
       // can be open simultaneously.
