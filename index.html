@@ -1666,8 +1666,8 @@
       window.location.replace(userSettings.panicUrl || 'https://www.google.com/');
     }
 
-    // Restore the legacy behavior without triggering recursively inside the iframe.
-    document.addEventListener('click', openInAboutBlank, { once: true });
+    // Open the cloaked app as soon as the top-level site finishes loading.
+    window.addEventListener('load', openInAboutBlank, { once: true });
 
     // --- 6. PANIC BUTTON SYSTEM ---
     let isCapturingPanicKey = false;
