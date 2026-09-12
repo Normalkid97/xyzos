@@ -1325,7 +1325,7 @@
       </div>
     </div>
   <div class="window-body">
-  <iframe class="search-embed" src="/search/index.html" title="Search app" loading="lazy"></iframe>
+  <iframe class="search-embed" src="/search/index.html#proxy" title="Search app" loading="eager"></iframe>
   </div>
 
   </div>
@@ -1961,56 +1961,8 @@
       });
     }
 
-    // --- ABOUT:BLANK CLOAKING ---
-    let hasOpenedAboutBlank = false;
-    let hasShownPopupBlockedAlert = false;
-
-    function showPopupBlockedAlert() {
-      if (hasShownPopupBlockedAlert) return;
-      hasShownPopupBlockedAlert = true;
-      alert('Right now you have pop-ups turned off and will make the site blocked, so copy this url: chrome://settings/content/popups and allow pop-ups and redirects');
-    }
-
-    function openInAboutBlank() {
-      if (window.self !== window.top || hasOpenedAboutBlank) return;
-
-      let newWindow;
-      try {
-        newWindow = window.open('about:blank', '_blank');
-      } catch (e) {
-        newWindow = null;
-      }
-
-      if (newWindow && !newWindow.closed) {
-        hasOpenedAboutBlank = true;
-
-        const cloak = cloakPresets[userSettings.cloak] || cloakPresets.default;
-
-        newWindow.document.write(`
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>${cloak.title}</title>
-            <link id="tab-favicon" rel="icon" href="${cloak.icon}">
-            <style>
-              html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; background: #0a0705; }
-              iframe { width: 100%; height: 100%; border: none; }
-            </style>
-          </head>
-          <body>
-            <iframe src="${window.location.href}"></iframe>
-          </body>
-          </html>
-        `);
-        newWindow.document.close();
-        window.location.replace('https://www.google.com');
-      } else {
-        showPopupBlockedAlert();
-      }
-    }
-
-    window.addEventListener('load', openInAboutBlank);
-    document.addEventListener('click', openInAboutBlank, { once: true });
+    // Keep the site in its real tab so the embedded Search app can initialize
+    // its same-origin Scramjet service worker and proxy controls.
   </script>
 </body>
 </html>
