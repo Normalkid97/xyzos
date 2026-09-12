@@ -21,9 +21,13 @@ app.use("/search/uv/sw.js", (_req, res, next) => {
 });
 app.use(express.static(root));
 
-app.all(/^\/search\/service(?:\/.*)?$/, (req, res) => bare.routeRequest(req, res));
-
-const server = createServer(app);
+const server = createServer((req, res) => {
+  if (bare.shouldRoute(req)) {
+    void bare.routeRequest(req, res);
+    return;
+  }
+  app(req, res);
+});
 server.on("upgrade", (req, socket, head) => {
   if (req.url?.startsWith("/search/service/")) bare.upgrade(req, socket, head);
   else socket.end();

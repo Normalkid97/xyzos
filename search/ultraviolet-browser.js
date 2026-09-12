@@ -38,9 +38,15 @@ async function browse(event) {
     const frame = document.createElement("iframe");
     frame.className = "scramjet-frame";
     frame.title = "Ultraviolet proxy view";
+    frame.addEventListener("load", () => {
+      status.textContent = "Connected through Ultraviolet";
+    }, { once: true });
+    frame.addEventListener("error", () => {
+      status.textContent = "Ultraviolet could not load this address.";
+    }, { once: true });
     frame.src = `${self.__uv$config.prefix}${self.__uv$config.encodeUrl(target)}`;
     frameHost.replaceChildren(frame);
-    status.textContent = "Connected through Ultraviolet";
+    status.textContent = "Loading through Ultraviolet…";
   } catch (error) {
     status.textContent = error instanceof Error ? error.message : "Unable to start Ultraviolet.";
   } finally {
