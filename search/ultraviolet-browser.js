@@ -5,6 +5,10 @@ const form = document.getElementById("scramjet-form");
 const frameHost = document.getElementById("scramjet-frame-host");
 const status = document.getElementById("scramjet-status");
 const goButton = document.getElementById("scramjet-go");
+const browserAddress = document.querySelector("[data-browser-address]");
+const backButton = document.querySelector("[data-browser-back]");
+const forwardButton = document.querySelector("[data-browser-forward]");
+const reloadButton = document.querySelector("[data-browser-reload]");
 
 function normalizeUrl(value) {
   const trimmed = value.trim();
@@ -86,6 +90,7 @@ async function browse(event) {
     }, { once: true });
     frame.src = `${self.__uv$config.prefix}${self.__uv$config.encodeUrl(target)}`;
     frameHost.replaceChildren(frame);
+    browserAddress.textContent = target;
     status.textContent = "Loading through Ultraviolet…";
   } catch (error) {
     status.textContent = error instanceof Error ? error.message : "Unable to start Ultraviolet.";
@@ -95,4 +100,7 @@ async function browse(event) {
 }
 
 form.addEventListener("submit", browse);
+backButton.addEventListener("click", () => frameHost.querySelector("iframe")?.contentWindow.history.back());
+forwardButton.addEventListener("click", () => frameHost.querySelector("iframe")?.contentWindow.history.forward());
+reloadButton.addEventListener("click", () => frameHost.querySelector("iframe")?.contentWindow.location.reload());
 status.textContent = "Ready — enter a URL to browse";
