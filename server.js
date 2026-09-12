@@ -21,6 +21,10 @@ app.use((req, res, next) => {
 });
 app.use(express.static(root));
 
+app.get("/wisp/", (_req, res) => {
+  res.status(426).type("text/plain").send("Wisp proxy endpoint. Connect using WebSocket.");
+});
+
 const server = createServer(app);
 server.on("upgrade", (req, socket, head) => {
   if (req.url?.startsWith("/wisp/")) wisp.routeRequest(req, socket, head);
