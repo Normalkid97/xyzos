@@ -924,7 +924,7 @@
       <!-- Header Title -->
       <div class="catalog-header">
         <h2 class="catalog-title">assignments</h2>
-        <div class="catalog-count">2,709 games</div>
+            <div class="catalog-count">2,725 games</div>
       </div>
 
       <!-- Search Bar -->
@@ -1995,8 +1995,49 @@
       }[ch]));
     }
 
+    const lumiosGames = [
+      ['Valorant', 'valorant.jpeg', 'valorant.html'],
+      ['Fnaf 2', 'fnaf2.jpeg', 'fnaf2.html'],
+      ['Fnaf 3', 'fnaf3.jpeg', 'fnaf3.html'],
+      ['Fnaf 4', 'fnaf4.jpeg', 'FNAF4.html'],
+      ['Fnaf Sister Location', 'fnafsl.jpeg', 'FNAFSL.html'],
+      ['Terraria', 'terraria.png', 'Terraria 1.0.html'],
+      ['Geodash', 'geometryDash.jpeg', 'Geo-dash.html'],
+      ['Evil Glitch', 'evil-glitch.jpeg', 'EvilGlitch.html'],
+      ['Sandgame', 'sandgame.jpg', 'sandgame-js.html'],
+      ['Sandboxels', 'sandboxels.jpeg', 'sandboxels.r74n.html'],
+      ['Doodle Jump', 'doodlejump.jpeg', 'doodlejump.html'],
+      ['Monkeymart', 'monkeymart.jpeg', 'Monkeymart.html'],
+      ['Edge Not Found', 'edgenotfound.jpeg', 'edgenotfound.html'],
+      ['Just One Boss', 'justoneboss.png', 'justoneboss.html'],
+      ['You Are Jeff Bezos', 'youarejeffbezos.png', 'youarejeffbezos.html'],
+      ['Backrooms', 'backrooms.jpeg', 'Backrooms.html'],
+      ['Eaglercraft 1.5.2', 'eaglercraft.png', 'eaglercraft.1.5.2.html'],
+      ['Eaglercraft 1.8', 'eaglercraft.png', 'eaglercraft.1.8.html'],
+      ['xx142-b2.exe', 'xxb2exe.jpeg', 'b2exe.html'],
+      ['Blackhole Black Square', 'blackholeblacksquare.jpeg', 'BlackHoleBlackSquare.html'],
+      ['Konnekt', 'konnekt.png', 'Konnekt.html']
+    ];
+
+    function renderLumiosGames() {
+      const grid = document.getElementById('assignmentsGrid');
+      if (!grid) return;
+      const base = 'https://raw.githubusercontent.com/LuminesenceProject/lumi-games/main/';
+      const fragment = document.createDocumentFragment();
+      lumiosGames.forEach(([name, image, gamePath]) => {
+        const card = document.createElement('div');
+        card.className = 'item-card-tile launchable';
+        card.dataset.title = name.toLowerCase();
+        card.dataset.url = `${base}games/${encodeURIComponent(gamePath).replace(/%2F/g, '/')}`;
+        card.innerHTML = `<img src="${base}images/${image}" alt="${escapeHtml(name)}" loading="lazy"><div class="item-card-title">${escapeHtml(name)}</div>`;
+        fragment.appendChild(card);
+      });
+      grid.prepend(fragment);
+    }
+
     // Wire both catalog tabs to the same launcher.
     document.addEventListener('DOMContentLoaded', () => {
+      renderLumiosGames();
       document.querySelectorAll('#assignmentsGrid .item-card-tile, #quizGrid .item-card-tile')
         .forEach(card => {
           card.classList.add('launchable');
