@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "node server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "mkdir -p search/uv search/baremux search/libcurl && cp -r node_modules/@titaniumnetwork-dev/ultraviolet/dist/* search/uv/ && cp -r node_modules/@mercuryworkshop/bare-mux/dist/* search/baremux/ && cp -r node_modules/@mercuryworkshop/libcurl-transport/dist/* search/libcurl/"
   },
   "dependencies": {
     "@mercuryworkshop/bare-mux": "^2.1.9",
